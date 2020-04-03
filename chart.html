@@ -1,0 +1,44 @@
+<html>
+<head>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="parser.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart', 'controls']});
+        google.charts.setOnLoadCallback(drawDashboard);
+
+        function drawDashboard() {
+
+            var data = google.visualization.arrayToDataTable(parsedData);
+
+            var options = {
+                legend: { position: 'bottom' }
+            };
+
+            var dashboard = new google.visualization.Dashboard(
+                document.getElementById('dashboard_id')
+            );
+
+            // create thing to control the chart
+            // eg. donutRangeSliter
+            var selector = new google.visualization.ControlWrapper({
+                controlType: "CategoryFilter",
+                containerId: "selectors",
+                options: {
+                    "filterColumnLabel": "date"
+                }
+            })
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            dashboard.bind(selector, chart)
+            dashboard.draw(data);
+        }
+    </script>
+</head>
+<body>
+    <div id="dashboard_id">
+        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+        <div id="selectors"></div>
+    </div>
+</body>
+</html>
